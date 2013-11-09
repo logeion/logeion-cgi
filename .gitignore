@@ -1,4 +1,10 @@
 *.py[cod]
+*.db*
+*.sqlite*
+*.old*
+*.bkup*
+*.tmp*
+*.orig*
 
 # C extensions
 *.so

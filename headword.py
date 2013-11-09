@@ -31,7 +31,7 @@ numEntries = 0
 #dictsLatin = {"LatinShortDefs":[], "BWL":[], "LewisShort":[], "Lewis":[], "DuCange":[], "Antiquities":[], "Geography":[], "Harpers":[], "PerseusEncyclopedia":[], "PrincetonEncyclopedia":[]}
 dictsLatin = {"LatinShortDefs":[], "BWL":[], "LewisShort":[], "Lewis":[], "ExamplesFromTheCorpus":[], "LaNe":[], "DuCange":[], "Antiquities":[], "Geography":[], "Harpers":[], "PerseusEncyclopedia":[], "PrincetonEncyclopedia":[]}
 #dictsGreek = {"GreekShortDefs":[], "LSJ":[], "Autenrieth":[], "Slater":[], "MiddleLiddell":[]}
-dictsGreek = {"GreekShortDefs":[], "LSJ":[], "Autenrieth":[], "Slater":[], "MiddleLiddell":[], "ExamplesFromTheCorpus":[]}
+dictsGreek = {"GreekShortDefs":[], "LSJ":[], "Autenrieth":[], "Slater":[], "MiddleLiddell":[], "ExamplesFromTheCorpus":[], "DGE":[]}
 
 dFound = []
 lang = ""
@@ -44,7 +44,7 @@ except UnicodeDecodeError:
     lang = "greek"
     dicts = dictsGreek
     #dOrder = ["GreekShortDefs", "LSJ", "Autenrieth", "Slater", "MiddleLiddell"]
-    dOrder = ["GreekShortDefs", "LSJ", "Autenrieth", "Slater", "MiddleLiddell", "ExamplesFromTheCorpus"]
+    dOrder = ["GreekShortDefs", "LSJ", "Autenrieth", "Slater", "MiddleLiddell", "DGE", "ExamplesFromTheCorpus"]
     samplesDB = "greekInfo.db"
 else:
     lang = "latin"
@@ -278,7 +278,7 @@ for row in rows:
         numEntries += 1
 
     # if the dictionary is DuCange
-    elif dict == "DuCange":
+    elif dict == "DuCange" or dict == "DGE":
         entry = re.sub('<dictScrap', '&nbsp;&nbsp;&nbsp;&nbsp;<dictScrap', entry)
         entry = re.sub('dictScrap>', 'dictScrap><br><br>', entry)
     
