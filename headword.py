@@ -116,7 +116,8 @@ for row in rows:
     # need to be in Unicode; don't want to do this substitution for anything    
     # that begins with a tag
     oo_sub_patt = re.compile('^([^\w]*)[\w]+', re.UNICODE)
-    if orth_orig and re.search('^[^\w]', entry, re.UNICODE) is None:
+    if orth_orig and re.search('^[^\w]', entry, re.UNICODE) is None \
+      and dict not in ('GreekShortDefs','LatinShortDefs'):
         orth_orig_u = orth_orig.decode('utf-8')
         entry_u = entry.decode('utf-8')
         entry = oo_sub_patt.sub(u'\1'+orth_orig_u, entry_u).encode('utf-8')
