@@ -280,8 +280,20 @@ for row in rows:
 
     # if the dictionary is DuCange
     elif dict == "DuCange" or dict == "DGE":
-        entry = re.sub('<dictScrap', '&nbsp;&nbsp;&nbsp;&nbsp;<dictScrap', entry)
-        entry = re.sub('dictScrap>', 'dictScrap><br><br>', entry)
+        orth_orig = row['orth_orig']
+        if dict == "DGE":
+            link = u'<a href="http://dge.cchs.csic.es/xdge/%s">%s</a>' \
+                % (orth_orig, orth_orig)
+            entry = entry.decode('utf-8').replace(orth_orig, link, 1)
+            entry = entry.encode('utf-8')
+        else:
+            link = u'<a href="http://ducange.enc.sorbonne.fr/%s">%s</a>' \
+                % (orth_orig, orth_orig.upper())
+            entry = entry.decode('utf-8').replace(orth_orig, link, 1)
+            entry = entry.encode('utf-8')
+
+        #entry = re.sub('<dictScrap', '&nbsp;&nbsp;&nbsp;&nbsp;<dictScrap', entry)
+        #entry = re.sub('dictScrap>', 'dictScrap><br><br>', entry)
     
         entry = re.sub(r'<form rend="b">(.*?)</form>', r'<b>\1</b>', entry)
         entry = re.sub(r'<form rend="sc">(.*?)</form>', r'<i>\1</i>', entry)
