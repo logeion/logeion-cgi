@@ -29,9 +29,13 @@ numEntries = 0
 
 # initialize dictionaries and their entry lists
 #dictsLatin = {"LatinShortDefs":[], "BWL":[], "LewisShort":[], "Lewis":[], "DuCange":[], "Antiquities":[], "Geography":[], "Harpers":[], "PerseusEncyclopedia":[], "PrincetonEncyclopedia":[]}
-dictsLatin = {"LatinShortDefs":[], "BWL":[], "LewisShort":[], "Lewis":[], "ExamplesFromTheCorpus":[], "LaNe":[], "DuCange":[], "Antiquities":[], "Geography":[], "Harpers":[], "PerseusEncyclopedia":[], "PrincetonEncyclopedia":[]}
+dictsLatin = {"LatinShortDefs":[], "BWL":[], "LewisShort":[], "Lewis":[],
+              "ExamplesFromTheCorpus":[], "LaNe":[], "DuCange":[],
+              "Antiquities":[], "Geography":[], "Harpers":[],
+              "PerseusEncyclopedia":[], "PrincetonEncyclopedia":[]}
 #dictsGreek = {"GreekShortDefs":[], "LSJ":[], "Autenrieth":[], "Slater":[], "MiddleLiddell":[]}
-dictsGreek = {"GreekShortDefs":[], "LSJ":[], "Autenrieth":[], "Slater":[], "MiddleLiddell":[], "ExamplesFromTheCorpus":[], "DGE":[]}
+dictsGreek = {"GreekShortDefs":[], "LSJ":[], "Autenrieth":[], "Slater":[],
+              "MiddleLiddell":[], "ExamplesFromTheCorpus":[], "DGE":[]}
 
 dFound = []
 lang = ""
@@ -43,7 +47,6 @@ try:
 except UnicodeDecodeError:
     lang = "greek"
     dicts = dictsGreek
-    #dOrder = ["GreekShortDefs", "LSJ", "Autenrieth", "Slater", "MiddleLiddell"]
     dOrder = ["GreekShortDefs", "LSJ", "Autenrieth", "Slater", "MiddleLiddell", "DGE", "ExamplesFromTheCorpus"]
     samplesDB = "greekInfo.db"
 else:
@@ -99,16 +102,13 @@ headword = ""
 # for each row
 for row in rows:
     # find the actual headword, the entry, and the dictionary it's in
-    #hw = row[0].encode("utf-8")
-    #orth_orig = row[1].encodeI("utf-8")
-    #entry = row[2].encode("utf-8")
-    #dict = row[3].encode("utf-8")
     hw = row['head'].encode("utf-8")
     orth_orig = row['orth_orig'].encode("utf-8")
     entry = row['content'].encode("utf-8")
     dict = row['dico'].encode("utf-8")
 
-    # Where the orth_orig replacement is handled; it's separate for now to facilitate debugging
+    # Where the orth_orig replacement is handled; it's separate for now to
+    # facilitate debugging
     if dict == 'Antiquities':
         orth_patt = re.compile("(<label[^>]*>)[^<]*(</label>)")
     
@@ -117,7 +117,7 @@ for row in rows:
     # that begins with a tag
     oo_sub_patt = re.compile('^([^\w]*)[\w]+', re.UNICODE)
     if orth_orig and re.search('^[^\w]', entry, re.UNICODE) is None \
-      and dict not in ('GreekShortDefs','LatinShortDefs'):
+       and dict not in ('GreekShortDefs','LatinShortDefs'):
         orth_orig_u = orth_orig.decode('utf-8')
         entry_u = entry.decode('utf-8')
         entry = oo_sub_patt.sub(u'\1'+orth_orig_u, entry_u).encode('utf-8')
@@ -135,57 +135,36 @@ for row in rows:
     entry = re.sub('<title>', '<text>', entry)
     entry = re.sub('</title>', '</text>', entry)
     
-    # whatever the dictionary we convert from the entry to BeautifulStoneSoup and back again
-    # to make it a little nicer to read (and sometimes perform some changes to the hierarchy)
+    # whatever the dictionary we convert from the entry to BeautifulStoneSoup
+    # and back again to make it a little nicer to read (and sometimes perform
+    # some changes to the hierarchy)
     
     # if the dictionary is either of the ShortDefs
     if dict == "LatinShortDefs" or dict == "GreekShortDefs":
         soup = BeautifulStoneSoup(entry)
         entry = soup.prettify()
         
-        #add headword (which are numbered in ShortDefs) to the beginning of the entry
+        # add headword (which are numbered in ShortDefs) to the beginning
+        # of the entry
         entry = hw + ", " + entry
 
         dicts[dict].append(entry)
         numEntries += 1
     
     # if the dictionary is Lewis & Short, LSJ, Slater, or MiddleLiddell
-    elif dict == "LewisShort" or dict == "LSJ" or dict == "Slater" or dict == "MiddleLiddell":
+    elif dict in ("LewisShort", "LSJ", "Slater", "MiddleLiddell"):
         soup = BeautifulSoup(entry)
         
         # get the first sense tag
         s = soup.sense
         orig_level = -1
         
-        # one-by-one, convert all of the sense tags to li tags with various levels of indentation
-        # based on its attributes
-        """
-        while s != None:
-            if s.has_key('level'):
-                level = int(s.get('level'))
-            
-            li = Tag(soup, 'li', [('style', 'margin-left: ' + str((level - 1) * 20) + 'px;')])
-            
-            if (orig_level == -1):
-                orig_level = level
-            
-            if ((level - orig_level) % 3) == 0:
-                li['class'] = 'l1'
-            elif ((level - orig_level) % 3) == 1:
-                li['class'] = 'l2'
-            elif ((level - orig_level) % 3) == 2:
-                li['class'] = 'l3'
-            
-            cs = s.contents
-            i = 0
-            for c in cs:
-                li.insert(i, unicode(c))
-                i += 1
-            
-            s.replaceWith(li)
-            s = soup.sense
-        """
-            
+        # one-by-one, convert all of the sense tags to li tags with various
+        # levels of indentation based on its attributes
+
+        # commented out for now, since we have replaced this with pre-
+        # processing after parsing
+
         entry = soup.prettify()
         
         # bookend the li tags with an ordered list
@@ -205,8 +184,6 @@ for row in rows:
         
         u = soup.findAll('usg')
         c = len(u) - 2
-        
-        #entry = soup.prettify()
         
         entry = re.sub('</etym>, ', '</etym>,<ol><li class="l1" style="margin-left: 10px; margin-top: 5px; list-style-type: none;">\xe2\x80\x94', entry)
         entry = re.sub('\xe2\x80\x94', '</li><li class="l1" style="margin-left: 10px; margin-top: 5px; list-style-type: none;">\xe2\x80\x94', entry)
@@ -284,20 +261,31 @@ for row in rows:
         if dict == "DGE":
             link = u'<a href="http://dge.cchs.csic.es/xdge/%s">%s</a>' \
                 % (orth_orig, orth_orig)
-            entry = entry.decode('utf-8').replace(orth_orig, link, 1)
+            entry = entry.decode('utf-8')
+            m = re.search('(<orth[^>]*>).*?(</orth>)', entry, re.S)
+            entry = entry.replace(m.group(0), m.group(1)+link+m.group(2), 1)
             entry = entry.encode('utf-8')
+            #entry = '<link rel="stylesheet" type="text/css" href="css/dge.css" />\n' + entry
         else:
             link = u'<a href="http://ducange.enc.sorbonne.fr/%s">%s</a>' \
                 % (orth_orig, orth_orig.upper())
-            entry = entry.decode('utf-8').replace(orth_orig, link, 1)
+            entry = entry.decode('utf-8')
+            m = re.search(u'(<form rend="b">).*?(</form>)', entry, re.UNICODE)
+            if m:
+                entry = entry.replace(m.group(0), m.group(1)+link+m.group(2), 1)
+            #entry = entry.decode('utf-8').replace(orth_orig, link, 1)
             entry = entry.encode('utf-8')
+            #entry = '<link rel="stylesheet" type="text/css" href="css/ducange.css" />\n' + entry
+
 
         #entry = re.sub('<dictScrap', '&nbsp;&nbsp;&nbsp;&nbsp;<dictScrap', entry)
         #entry = re.sub('dictScrap>', 'dictScrap><br><br>', entry)
     
-        entry = re.sub(r'<form rend="b">(.*?)</form>', r'<b>\1</b>', entry)
-        entry = re.sub(r'<form rend="sc">(.*?)</form>', r'<i>\1</i>', entry)
-        entry = re.sub(r'<hi rend="i">(.*?)</hi>', r'<i>\1</i>', entry)
+        # TODO: check to see if these three should be commented out
+
+        #entry = re.sub(r'<form rend="b">(.*?)</form>', r'<b>\1</b>', entry)
+        #entry = re.sub(r'<form rend="sc">(.*?)</form>', r'<i>\1</i>', entry)
+        #entry = re.sub(r'<hi rend="i">(.*?)</hi>', r'<i>\1</i>', entry)
 
         dicts[dict].append(entry)
         numEntries += 1
