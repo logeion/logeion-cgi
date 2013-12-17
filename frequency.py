@@ -91,9 +91,9 @@ if rows != None:
         #print "<li class=\"author_rank\">" + row[2].encode("utf-8") + "</li>"
         author = row[2].encode("utf-8")
         if lang == "latin":
-            authorSearch = "http://artflx.uchicago.edu/perseus-cgi/search3t?dbname=LatinAugust2011&word=lemma%3A" + st_mostfreq.encode('utf-8') + "&OUTPUT=conc&CONJUNCT=PHRASE&DISTANCE=3&author=" + re.sub(" ", "+", author) + "&title=&POLESPAN=5&THMPRTLIMIT=1&KWSS=1&KWSSPRLIM=500&trsortorder=author%2C+title&editor=&pubdate=&language=&shrtcite=&filename=&genre=&sortorder=author%2C+title&dgdivhead=&dgdivtype=&dgsubdivwho=&dgsubdivn=&dgsubdivtag=&dgsubdivtype="
+            authorSearch = "http://perseus.uchicago.edu/cgi-bin/search3t?dbname=LatinAugust2011&word=lemma%3A" + st_mostfreq.encode('utf-8') + "&OUTPUT=conc&CONJUNCT=PHRASE&DISTANCE=3&author=" + re.sub(" ", "+", author) + "&title=&POLESPAN=5&THMPRTLIMIT=1&KWSS=1&KWSSPRLIM=500&trsortorder=author%2C+title&editor=&pubdate=&language=&shrtcite=&filename=&genre=&sortorder=author%2C+title&dgdivhead=&dgdivtype=&dgsubdivwho=&dgsubdivn=&dgsubdivtag=&dgsubdivtype="
         else:
-            authorSearch = "http://artflx.uchicago.edu/perseus-cgi/search3torth?dbname=GreekFeb2011&word=lemma%3A" + st_mostfreq.encode('utf-8') + "&OUTPUT=conc&ORTHMODE=ORG&CONJUNCT=PHRASE&DISTANCE=3&author=" + re.sub(" ", "+", author) + "&title=&POLESPAN=5&THMPRTLIMIT=1&KWSS=1&KWSSPRLIM=500&trsortorder=author%2C+title&editor=&pubdate=&language=&shrtcite=&filename=&genre=&sortorder=author%2C+title&dgdivhead=&dgdivtype=&dgsubdivwho=&dgsubdivn=&dgsubdivtag=&dgsubdivtype="
+            authorSearch = "http://perseus.uchicago.edu/cgi-bin/search3torth?dbname=GreekFeb2011&word=lemma%3A" + st_mostfreq.encode('utf-8') + "&OUTPUT=conc&ORTHMODE=ORG&CONJUNCT=PHRASE&DISTANCE=3&author=" + re.sub(" ", "+", author) + "&title=&POLESPAN=5&THMPRTLIMIT=1&KWSS=1&KWSSPRLIM=500&trsortorder=author%2C+title&editor=&pubdate=&language=&shrtcite=&filename=&genre=&sortorder=author%2C+title&dgdivhead=&dgdivtype=&dgsubdivwho=&dgsubdivn=&dgsubdivtag=&dgsubdivtype="
         print "<li class=\"author_rank\"><as href=\"" + authorSearch + "\">" + author + "</as></li>"
         i += 1
     print "</ol>"
