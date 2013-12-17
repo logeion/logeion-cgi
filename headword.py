@@ -47,7 +47,7 @@ try:
 except UnicodeDecodeError:
     lang = "greek"
     dicts = dictsGreek
-    dOrder = ["GreekShortDefs", "LSJ", "Autenrieth", "Slater", "MiddleLiddell", "DGE", "ExamplesFromTheCorpus"]
+    dOrder = ["GreekShortDefs", "LSJ", "DGE", "Autenrieth", "Slater", "MiddleLiddell", "ExamplesFromTheCorpus"]
     samplesDB = "greekInfo.db"
 else:
     lang = "latin"
@@ -265,7 +265,6 @@ for row in rows:
             m = re.search('(<orth[^>]*>).*?(</orth>)', entry, re.S)
             entry = entry.replace(m.group(0), m.group(1)+link+m.group(2), 1)
             entry = entry.encode('utf-8')
-            #entry = '<link rel="stylesheet" type="text/css" href="css/dge.css" />\n' + entry
         else:
             link = u'<a href="http://ducange.enc.sorbonne.fr/%s">%s</a>' \
                 % (orth_orig, orth_orig.upper())
@@ -275,7 +274,6 @@ for row in rows:
                 entry = entry.replace(m.group(0), m.group(1)+link+m.group(2), 1)
             #entry = entry.decode('utf-8').replace(orth_orig, link, 1)
             entry = entry.encode('utf-8')
-            #entry = '<link rel="stylesheet" type="text/css" href="css/ducange.css" />\n' + entry
 
 
         #entry = re.sub('<dictScrap', '&nbsp;&nbsp;&nbsp;&nbsp;<dictScrap', entry)
