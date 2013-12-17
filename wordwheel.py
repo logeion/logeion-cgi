@@ -428,10 +428,10 @@ if r != None:
 
 # choose the right lexicon
 if dict == "GreekHeadwords":
-    lex = sqlite3.connect("GreekLexicon.db")
+    lex = sqlite3.connect("GreekLexiconNov2011.db")
     curs2 = lex.cursor()
 else:
-    lex = sqlite3.connect("LatinLexicon.db")
+    lex = sqlite3.connect("Latinlexicon08102011.db")
     curs2 = lex.cursor()
 
 st2 = (st.decode("utf-8"),)
