@@ -28,14 +28,17 @@ numDicts = 0
 numEntries = 0
 
 # initialize dictionaries and their entry lists
-#dictsLatin = {"LatinShortDefs":[], "BWL":[], "LewisShort":[], "Lewis":[], "DuCange":[], "Antiquities":[], "Geography":[], "Harpers":[], "PerseusEncyclopedia":[], "PrincetonEncyclopedia":[]}
-dictsLatin = {"LatinShortDefs":[], "BWL":[], "LewisShort":[], "Lewis":[],
-              "ExamplesFromTheCorpus":[], "LaNe":[], "DuCange":[],
-              "Antiquities":[], "Geography":[], "Harpers":[],
-              "PerseusEncyclopedia":[], "PrincetonEncyclopedia":[]}
-#dictsGreek = {"GreekShortDefs":[], "LSJ":[], "Autenrieth":[], "Slater":[], "MiddleLiddell":[]}
-dictsGreek = {"GreekShortDefs":[], "LSJ":[], "Autenrieth":[], "Slater":[],
-              "MiddleLiddell":[], "ExamplesFromTheCorpus":[], "DGE":[]}
+# NB: To allow a dictionary to show up in Logeion, it must be in the
+#     appropriate list. The dOrder* lists also determine appearance
+#     from top to bottom
+dOrderLatin = ["hrvmatlat", "LatinShortDefs", "BWL", "FriezeDennisonVergil",
+               "LewisShort", "Lewis", "LaNe", "DuCange",
+               "ExamplesFromTheCorpus", "Antiquities", "Geography", "Harpers",
+               "PerseusEncyclopedia", "PrincetonEncyclopedia"]
+dictsLatin = dict([(d,[]) for d in dOrderLatin]) # TODO: upgrade python vers
+dOrderGreek = ["GreekShortDefs", "LSJ", "DGE", "AutenriethHomer",
+               "SlaterPindar", "MiddleLiddell", "ExamplesFromTheCorpus"]
+dictsGreek = dict([(d,[]) for d in dOrderGreek])
 
 dFound = []
 lang = ""
@@ -47,13 +50,12 @@ try:
 except UnicodeDecodeError:
     lang = "greek"
     dicts = dictsGreek
-    dOrder = ["GreekShortDefs", "LSJ", "DGE", "Autenrieth", "Slater", "MiddleLiddell", "ExamplesFromTheCorpus"]
+    dOrder = dOrderGreek
     samplesDB = "greekInfo.db"
 else:
     lang = "latin"
     dicts = dictsLatin
-    #dOrder = ["LatinShortDefs", "BWL", "LewisShort", "Lewis", "DuCange", "Antiquities", "Geography", "Harpers", "PerseusEncyclopedia", "PrincetonEncyclopedia"]
-    dOrder = ["LatinShortDefs", "BWL", "LewisShort", "Lewis", "LaNe", "DuCange", "ExamplesFromTheCorpus", "Antiquities", "Geography", "Harpers", "PerseusEncyclopedia", "PrincetonEncyclopedia"]
+    dOrder = dOrderLatin
     samplesDB = "latinInfo.db"
 
 # perform the search and get all the results
@@ -263,6 +265,7 @@ for row in rows:
                 % (orth_orig, orth_orig)
             entry = entry.decode('utf-8')
             m = re.search('(<orth[^>]*>).*?(</orth>)', entry, re.S)
+            #m = re.search('(<strong class="lemma(2)? grc">).*?(</strong>)', entry, re.S)
             entry = entry.replace(m.group(0), m.group(1)+link+m.group(2), 1)
             entry = entry.encode('utf-8')
         else:
