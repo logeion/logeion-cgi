@@ -31,7 +31,7 @@ numEntries = 0
 # NB: To allow a dictionary to show up in Logeion, it must be in the
 #     appropriate list. The dOrder* lists also determine appearance
 #     from top to bottom
-dOrderLatin = ["hrvmatlat", "LatinShortDefs", "BWL", "FriezeDennisonVergil",
+dOrderLatin = ["LatinShortDefs", "BWL", "FriezeDennisonVergil",
                "LewisShort", "Lewis", "LaNe", "DuCange",
                "ExamplesFromTheCorpus", "Antiquities", "Geography", "Harpers",
                "PerseusEncyclopedia", "PrincetonEncyclopedia"]
