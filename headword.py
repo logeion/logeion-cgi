@@ -36,9 +36,11 @@ dOrderLatin = ["LatinShortDefs", "BWL", "FriezeDennisonVergil",
                "ExamplesFromTheCorpus", "Antiquities", "Geography", "Harpers",
                "PerseusEncyclopedia", "PrincetonEncyclopedia"]
 dictsLatin = dict([(d,[]) for d in dOrderLatin]) # TODO: upgrade python vers
+skipLatin = ["hrvmatlat"]
 dOrderGreek = ["GreekShortDefs", "LSJ", "DGE", "AutenriethHomer",
                "SlaterPindar", "MiddleLiddell", "ExamplesFromTheCorpus"]
 dictsGreek = dict([(d,[]) for d in dOrderGreek])
+skipGreek = []
 
 dFound = []
 lang = ""
@@ -51,11 +53,13 @@ except UnicodeDecodeError:
     lang = "greek"
     dicts = dictsGreek
     dOrder = dOrderGreek
+    dictsToSkip = skipGreek
     samplesDB = "greekInfo.db"
 else:
     lang = "latin"
     dicts = dictsLatin
     dOrder = dOrderLatin
+    dictsToSkip = skipLatin
     samplesDB = "latinInfo.db"
 
 # perform the search and get all the results
@@ -140,6 +144,8 @@ for row in rows:
     # whatever the dictionary we convert from the entry to BeautifulStoneSoup
     # and back again to make it a little nicer to read (and sometimes perform
     # some changes to the hierarchy)
+    if dict in dictsToSkip:
+        continue
     
     # if the dictionary is either of the ShortDefs
     if dict == "LatinShortDefs" or dict == "GreekShortDefs":
