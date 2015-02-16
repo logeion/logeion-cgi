@@ -32,7 +32,7 @@ numEntries = 0
 #     appropriate list. The dOrder* lists also determine appearance
 #     from top to bottom
 dOrderLatin = ["LatinShortDefs", "BWL", "FriezeDennisonVergil",
-               "LewisShort", "Lewis", "LaNe", "DuCange",
+               "LewisShort", "Lewis", "LaNe", "DuCange", "DMLBS",
                "ExamplesFromTheCorpus", "Antiquities", "Geography", "Harpers",
                "PerseusEncyclopedia", "PrincetonEncyclopedia"]
 dictsLatin = dict([(d,[]) for d in dOrderLatin]) # TODO: upgrade python vers
