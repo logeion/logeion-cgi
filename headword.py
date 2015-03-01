@@ -156,8 +156,8 @@ for row in rows:
         dicts[dict].append(entry)
         numEntries += 1
     
-    # if the dictionary is Lewis & Short, LSJ, Slater, or MiddleLiddell
-    elif dict in ("LewisShort", "LSJ", "Slater", "MiddleLiddell"):
+    # if the dictionary is Lewis & Short, LSJ, SlaterPindar, or MiddleLiddell
+    elif dict in ("LewisShort", "LSJ", "SlaterPindar", "MiddleLiddell"):
         # bookend the li tags with an ordered list
         entry = re.sub('<li', '<ol><li', entry, 1)
         entry = re.sub('</div1>', '</ol></div1>', entry)
