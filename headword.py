@@ -149,9 +149,6 @@ for row in rows:
     
     # if the dictionary is either of the ShortDefs
     if dict == "LatinShortDefs" or dict == "GreekShortDefs":
-        soup = BeautifulStoneSoup(entry)
-        entry = soup.prettify()
-        
         # add headword (which are numbered in ShortDefs) to the beginning
         # of the entry
         entry = hw + ", " + entry
@@ -161,20 +158,6 @@ for row in rows:
     
     # if the dictionary is Lewis & Short, LSJ, Slater, or MiddleLiddell
     elif dict in ("LewisShort", "LSJ", "Slater", "MiddleLiddell"):
-        soup = BeautifulSoup(entry)
-        
-        # get the first sense tag
-        s = soup.sense
-        orig_level = -1
-        
-        # one-by-one, convert all of the sense tags to li tags with various
-        # levels of indentation based on its attributes
-
-        # commented out for now, since we have replaced this with pre-
-        # processing after parsing
-
-        entry = soup.prettify()
-        
         # bookend the li tags with an ordered list
         entry = re.sub('<li', '<ol><li', entry, 1)
         entry = re.sub('</div1>', '</ol></div1>', entry)
@@ -218,8 +201,6 @@ for row in rows:
         s = soup.findAll('sense')
         c = len(s) - 1
         
-        entry = soup.prettify()
-        
         # add to all but the last sense tag two line breaks to space out the examples
         entry = re.sub('</sense>', '</sense><br><br>', entry, c)
     
@@ -234,7 +215,7 @@ for row in rows:
         if tag:
             tag.clear()
 
-        entry = soup.prettify()
+        entry = str(soup)
 
         entry = re.sub('1\.', '<ol><li class="l1" style="margin-left: 10px; margin-top: 5px; list-style-type: none;">1.\t', entry, 1)
         entry = re.sub(r'(\d+\.(?!\t))', r'</li><li class="l1" style="margin-left: 10px; margin-top: 5px; list-style-type: none;">\1\t', entry)
@@ -299,9 +280,6 @@ for row in rows:
         
     # if the dictionary is any other dictionary
     else:
-        soup = BeautifulStoneSoup(entry)
-        entry = soup.prettify()
-        
         entry = re.sub('<sem>', '<ol><sem><li class="l1" style="margin-left: 10px; margin-top: 5px; list-style-type: none;">', entry, 1)
         entry = re.sub('<sem>', '<sem><li class="l1" style="margin-left: 10px; margin-top: 5px; list-style-type: none;">', entry)
         entry = re.sub('</sem>', '</li></sem>', entry)
