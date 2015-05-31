@@ -52,6 +52,8 @@ for row in rows:
         print "BWL"
     elif dict == "HansenQuinn":
         print "Hansen & Quinn " + ch
+    elif dict == "ChasePhillips":
+        print "Chase & Phillips " + ch
     else:
         print dict + " " + ch    
     
